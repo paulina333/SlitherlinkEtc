@@ -51,7 +51,7 @@ class slither:
         # if a node lies on the cycle, both its incident egdes must be == 1
         # for every dot in the gris there can be at most two incident egdes
         # the path is closed so either two or zero edges
-        
+        return ok
 
 game = slither("input.txt")
 
