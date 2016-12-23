@@ -18,16 +18,6 @@ class Board:
             print (self.nums[i])
 
 
-def find_empty_location(board):
-    for row in range(SIZE):
-        for col in range(SIZE):
-            if(board.nums[row][col] == EMPTY):
-                board.List[0] = row
-                board.List[1] = col
-                return board.List
-    return False
-
-
 def used_in_row(board, row, num):
     for i in range(SIZE):
         if(board.nums[row][i] == num):
@@ -130,14 +120,14 @@ def is_ordered(board):
 
 def solve(board):
     global pointer
-    # keeps the record of row and col in find_empty_location Function
+    # keeps the record of the next empty cell
     if pointer == SIZE * SIZE:
         if is_ordered(board):
             return True
         else:
             return False
 
-    # Assigning list values to row and col that we got from the above Function
+    # Assigning list values to row and col that we got from the above
     row = int(pointer / SIZE)
     col = int(pointer % SIZE)
 
