@@ -11,7 +11,6 @@ class Board:
 
     def __init__(self):
         self.nums = [[EMPTY] * SIZE for _ in range(SIZE)]
-        self.List = [0, 0]
 
     def print_grid(self):
         for i in range(SIZE):
