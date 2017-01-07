@@ -9,25 +9,24 @@ down = None
 left = None
 right = None
 
+
 class Board:
 
     def __init__(self):
         self.nums = [[EMPTY] * SIZE for _ in range(SIZE)]
 
-
     def print_grid(self):
         for i in range(SIZE):
             print (self.nums[i])
-    
+
     def create_puzzle(self):
         self.puzzle = [[EMPTY] * (SIZE + 2) for _ in range(SIZE + 2)]
         self.puzzle[0] = [EMPTY] + self.upper + [EMPTY]
         self.puzzle[SIZE + 1] = [EMPTY] + self.down + [EMPTY]
         for i in range(1, SIZE + 1):
-           self.puzzle[i][0] = self.left[i - 1]
-           self.puzzle[i][SIZE + 1] = self.right[i - 1]
-  
-    
+            self.puzzle[i][0] = self.left[i - 1]
+            self.puzzle[i][SIZE + 1] = self.right[i - 1]
+
     def print_puzzle(self):
         for i in range(SIZE + 2):
             print(self.puzzle[i])
@@ -59,16 +58,18 @@ def is_okay(board):
             return False
         if len(set(board.nums[i])) != len(board.nums[i]):
             return False
-    #columns
+    # columns
     for j in range(len(board.nums)):
         col_j = [board.nums[i][j] for i in range(len(board.nums))]
         if len(set(col_j)) != len(col_j):
             return False
-        
+
     return True
+
 
 def generate(board):
     global pointer
+
     SIZE = len(board.nums)
 
     if pointer == SIZE * SIZE:
@@ -76,12 +77,12 @@ def generate(board):
             return True
         else:
             return False
-        
+
     row = int(pointer / SIZE)
     col = int(pointer % SIZE)
-    
+
     nums = random.sample(range(1, SIZE + 1), SIZE)
-    
+
     for num in nums:
 
         if(check_location_is_safe(board, row, col, num)):
@@ -176,10 +177,11 @@ def delete_row_right(right_s, count):
         if right_s[el] != SIZE:
             right_s[el] = -1
 
+
 def deleted_move_txt(upper_s, lower_s, left_s, right_s, count):
-    #delete_col_up(upper_s, count)
+    #  delete_col_up(upper_s, count)
     delete_col_down(lower_s, count)
-    #delete_row_left(left_s, count)
+    delete_row_left(left_s, count)
     delete_row_right(right_s, count)
     with open('puzzle.txt', 'w') as puzzle:
         Upper = ' '.join(str(n) for n in upper_s)
@@ -192,6 +194,7 @@ def deleted_move_txt(upper_s, lower_s, left_s, right_s, count):
         puzzle.write(Lower + '\n')
         puzzle.write(Left + '\n')
         puzzle.write(Right + '\n')
+
 
 def is_ordered_row(board, row):
 
@@ -233,6 +236,7 @@ def is_ordered(board):
             return False
     return True
 
+
 def is_identical(board1, board2):
     for row in range(len(board1)):
         for col in range(len(board1)):
@@ -240,13 +244,14 @@ def is_identical(board1, board2):
                 return False
     return True
 
+
 def solve(board, solvedBoard):
     global pointer
 
     # keeps the record of the first empty place in the board
     if pointer == SIZE * SIZE:
         if is_ordered(board):
-            if solvedBoard == None:
+            if solvedBoard is None:
                 return True
             if is_identical(board.nums, solvedBoard):
                 return False
@@ -265,7 +270,7 @@ def solve(board, solvedBoard):
             board.nums[row][col] = num
             pointer += 1
             if(solve(board, solvedBoard)):
-                if solvedBoard == None:
+                if solvedBoard is None:
                     return True
                 if is_identical(board.nums, solvedBoard):
                     return False
@@ -277,34 +282,47 @@ def solve(board, solvedBoard):
 
 
 if __name__ == '__main__':
-    
+
     print("solve")
-    
+
     SIZE = 5
     G = Board()
     generate(G)
-    
+
     G.print_grid()
-    
+
     G.upper = [how_many_seen_col_up(G, el) for el in range(SIZE)]
     G.down = [how_many_seen_col_down(G, el) for el in range(SIZE)]
     G.left = [how_many_seen_row_left(G, el) for el in range(SIZE)]
     G.right = [how_many_seen_row_right(G, el) for el in range(SIZE)]
-    
-    original = [copy.deepcopy(G.upper), copy.deepcopy(G.down), copy.deepcopy(G.left), copy.deepcopy(G.right)]
-    
+
+    while SIZE not in G.upper or SIZE not in G.left:
+        print("generate again")
+        G = Board()
+        pointer = 0
+        generate(G)
+
+        G.print_grid()
+
+        G.upper = [how_many_seen_col_up(G, el) for el in range(SIZE)]
+        G.down = [how_many_seen_col_down(G, el) for el in range(SIZE)]
+        G.left = [how_many_seen_row_left(G, el) for el in range(SIZE)]
+        G.right = [how_many_seen_row_right(G, el) for el in range(SIZE)]
+
+    original = [copy.deepcopy(G.upper), copy.deepcopy(G.down),\
+                copy.deepcopy(G.left), copy.deepcopy(G.right)]
 
     G.create_puzzle()
 
-
     G.print_puzzle()
-    
-    print("koniec")
-    print(is_okay(G))
-    print("solve")
-    original_to_txt(G.upper, G.down, G.left, G.right)
-    clues = copy.deepcopy(original)
 
+    print("puzzle ready")
+    print(is_okay(G))
+    print("delete")
+    original_to_txt(G.upper, G.down, G.left, G.right)
+
+    clues = []
+    clues = copy.deepcopy(original)
     deleted_move_txt(clues[0], clues[1], clues[2], clues[3], 1)
 
     with open('puzzle.txt', 'r') as fh:
@@ -321,37 +339,35 @@ if __name__ == '__main__':
     B.create_puzzle()
     B.print_puzzle()
     pointer = 0
-    if solve(B, G.nums) == False:
-        print("done")
+    if solve(B, G.nums) is False:
+        print("unique")
     else:
-        print("kilka")
+        print("many")
         B.print_grid()
-    
-    print("done, ok")
 
-    print("NEXT")
-    clues = []
-    clues = copy.deepcopy(original)
-    
-    deleted_move_txt(clues[0], clues[1], clues[2], clues[3], 1)
-    
-    with open('puzzle.txt', 'r') as fh:
-        SIZE = int(fh.readline())
-        upper = list(map(int, fh.readline().split()))
-        down = list(map(int, fh.readline().split()))
-        left = list(map(int, fh.readline().split()))
-        right = list(map(int, fh.readline().split()))
-    B2 = Board()
-    B2.upper = upper
-    B2.down = down
-    B2.left = left
-    B2.right = right
-    B2.create_puzzle()
-    B2.print_puzzle()
-    pointer = 0
-    if solve(B2, G.nums) == False:
-        print("done")
-    else:
-        print("kilka")
-        B2.print_grid()
-   
+    while True:
+        clues = []
+        clues = copy.deepcopy(original)
+
+        deleted_move_txt(clues[0], clues[1], clues[2], clues[3], 2)
+
+        with open('puzzle.txt', 'r') as fh:
+            SIZE = int(fh.readline())
+            upper = list(map(int, fh.readline().split()))
+            down = list(map(int, fh.readline().split()))
+            left = list(map(int, fh.readline().split()))
+            right = list(map(int, fh.readline().split()))
+        B = Board()
+        B.upper = upper
+        B.down = down
+        B.left = left
+        B.right = right
+        B.create_puzzle()
+
+        pointer = 0
+        if solve(B, G.nums) is False:
+            print("unique")
+            B.print_puzzle()
+            break
+
+    print("done, ok")
