@@ -13,8 +13,7 @@ class Board:
 
     def __init__(self):
         self.nums = [[EMPTY] * SIZE for _ in range(SIZE)]
-       
-        
+
     def print_grid(self):
         for i in range(SIZE):
             print (self.nums[i])
@@ -119,6 +118,7 @@ def is_ordered(board):
             return False
     return True
 
+
 def is_identical(board1, board2):
     for row in range(len(board1)):
         for col in range(len(board1)):
@@ -126,13 +126,14 @@ def is_identical(board1, board2):
                 return False
     return True
 
+
 def solve(board, solvedBoard):
     global pointer
 
     # keeps the record of the first empty place in the board
     if pointer == SIZE * SIZE:
         if is_ordered(board):
-            if solvedBoard == None:
+            if solvedBoard is None:
                 return True
             if is_identical(board.nums, solvedBoard):
                 return False
@@ -151,7 +152,7 @@ def solve(board, solvedBoard):
             board.nums[row][col] = num
             pointer += 1
             if(solve(board, solvedBoard)):
-                if solvedBoard == None:
+                if solvedBoard is None:
                     return True
                 if is_identical(board.nums, solvedBoard):
                     return False
@@ -160,7 +161,7 @@ def solve(board, solvedBoard):
             pointer -= 1
             board.nums[row][col] = EMPTY
     return False
- 
+
 if __name__ == '__main__':
     file_name = 'puzzle.txt'
     with open(file_name, 'r') as fh:
@@ -176,14 +177,14 @@ if __name__ == '__main__':
 
     T.print_grid()
 
-    print("koniec")
+    print("solved")
     print(is_ordered(T))
-    print('ile?')
+    print('how many?')
 
     C = Board()
     pointer = 0
-    if solve(C, T.nums) == False:
-        print("jedna")
+    if solve(C, T.nums) is False:
+        print("unique")
     else:
-        print("kilka")
+        print("many")
         C.print_grid()
