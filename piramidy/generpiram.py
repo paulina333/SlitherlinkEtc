@@ -22,7 +22,7 @@ class Board:
     def create_puzzle(self):
         self.puzzle = [[EMPTY] * (SIZE + 2) for _ in range(SIZE + 2)]
         self.puzzle[0] = [EMPTY] + self.upper + [EMPTY]
-        self.puzzle[SIZE + 1] = [EMPTY] + self.lower + [EMPTY]
+        self.puzzle[SIZE + 1] = [EMPTY] + self.down + [EMPTY]
         for i in range(1, SIZE + 1):
            self.puzzle[i][0] = self.left[i - 1]
            self.puzzle[i][SIZE + 1] = self.right[i - 1]
@@ -152,30 +152,34 @@ def original_to_txt(upper_s, lower_s, left_s, right_s):
 def delete_col_up(upper_s, count):
     which = random.sample(range(SIZE), count)
     for el in which:
-        upper_s[el] = -1
+        if upper_s[el] != SIZE:
+            upper_s[el] = -1
 
 
 def delete_col_down(lower_s, count):
     which = random.sample(range(SIZE), count)
     for el in which:
-        lower_s[el] = -1
+        if lower_s[el] != SIZE:
+            lower_s[el] = -1
 
 
 def delete_row_left(left_s, count):
     which = random.sample(range(SIZE), count)
     for el in which:
-        left_s[el] = -1
+        if left_s[el] != SIZE:
+            left_s[el] = -1
 
 
 def delete_row_right(right_s, count):
     which = random.sample(range(SIZE), count)
     for el in which:
-        right_s[el] = -1
+        if right_s[el] != SIZE:
+            right_s[el] = -1
 
 def deleted_move_txt(upper_s, lower_s, left_s, right_s, count):
-    delete_col_up(upper_s, count)
+    #delete_col_up(upper_s, count)
     delete_col_down(lower_s, count)
-    delete_row_left(left_s, count)
+    #delete_row_left(left_s, count)
     delete_row_right(right_s, count)
     with open('puzzle.txt', 'w') as puzzle:
         Upper = ' '.join(str(n) for n in upper_s)
@@ -283,11 +287,11 @@ if __name__ == '__main__':
     G.print_grid()
     
     G.upper = [how_many_seen_col_up(G, el) for el in range(SIZE)]
-    G.lower = [how_many_seen_col_down(G, el) for el in range(SIZE)]
+    G.down = [how_many_seen_col_down(G, el) for el in range(SIZE)]
     G.left = [how_many_seen_row_left(G, el) for el in range(SIZE)]
     G.right = [how_many_seen_row_right(G, el) for el in range(SIZE)]
     
-    original = [copy.deepcopy(G.upper), copy.deepcopy(G.lower), copy.deepcopy(G.left), copy.deepcopy(G.right)]
+    original = [copy.deepcopy(G.upper), copy.deepcopy(G.down), copy.deepcopy(G.left), copy.deepcopy(G.right)]
     
 
     G.create_puzzle()
@@ -298,13 +302,11 @@ if __name__ == '__main__':
     print("koniec")
     print(is_okay(G))
     print("solve")
-    original_to_txt(G.upper, G.lower, G.left, G.right)
+    original_to_txt(G.upper, G.down, G.left, G.right)
     clues = copy.deepcopy(original)
-    print(clues[0])
-    print(original[0])
+
     deleted_move_txt(clues[0], clues[1], clues[2], clues[3], 1)
-    print(clues[0])
-    print(original[0])
+
     with open('puzzle.txt', 'r') as fh:
         SIZE = int(fh.readline())
         upper = list(map(int, fh.readline().split()))
@@ -312,6 +314,12 @@ if __name__ == '__main__':
         left = list(map(int, fh.readline().split()))
         right = list(map(int, fh.readline().split()))
     B = Board()
+    B.upper = upper
+    B.down = down
+    B.left = left
+    B.right = right
+    B.create_puzzle()
+    B.print_puzzle()
     pointer = 0
     if solve(B, G.nums) == False:
         print("done")
@@ -320,14 +328,13 @@ if __name__ == '__main__':
         B.print_grid()
     
     print("done, ok")
-    print(clues[0])
-    print(original[0])
+
     print("NEXT")
     clues = []
     clues = copy.deepcopy(original)
-    print(clues[0])
+    
     deleted_move_txt(clues[0], clues[1], clues[2], clues[3], 1)
-    print(clues[0])
+    
     with open('puzzle.txt', 'r') as fh:
         SIZE = int(fh.readline())
         upper = list(map(int, fh.readline().split()))
@@ -335,11 +342,16 @@ if __name__ == '__main__':
         left = list(map(int, fh.readline().split()))
         right = list(map(int, fh.readline().split()))
     B2 = Board()
+    B2.upper = upper
+    B2.down = down
+    B2.left = left
+    B2.right = right
+    B2.create_puzzle()
+    B2.print_puzzle()
     pointer = 0
     if solve(B2, G.nums) == False:
         print("done")
     else:
         print("kilka")
         B2.print_grid()
-    print(clues[0])
-    print("done, ok")
+   
