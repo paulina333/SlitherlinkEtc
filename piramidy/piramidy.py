@@ -1,5 +1,3 @@
-import random
-
 EMPTY = 0
 pointer = 0
 SIZE = 0
