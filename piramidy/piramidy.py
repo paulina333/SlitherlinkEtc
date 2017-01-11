@@ -162,14 +162,19 @@ def solve(board, solvedBoard):
             board.nums[row][col] = EMPTY
     return False
 
-if __name__ == '__main__':
-    file_name = 'puzzle.txt'
+
+def open_file(file_name):
     with open(file_name, 'r') as fh:
         SIZE = int(fh.readline())
         upper = list(map(int, fh.readline().split()))
         down = list(map(int, fh.readline().split()))
         left = list(map(int, fh.readline().split()))
         right = list(map(int, fh.readline().split()))
+
+
+if __name__ == '__main__':
+    file_name = 'puzzle.txt'
+    open_file(file_name)
     print("solve")
 
     T = Board()
@@ -177,14 +182,14 @@ if __name__ == '__main__':
 
     T.print_grid()
 
-    print("solved")
+    print("koniec")
     print(is_ordered(T))
-    print('how many?')
+    print('ile?')
 
     C = Board()
     pointer = 0
     if solve(C, T.nums) is False:
-        print("unique")
+        print("jedna")
     else:
-        print("many")
+        print("kilka")
         C.print_grid()
