@@ -171,7 +171,7 @@ class TestIsOrderedBoard(unittest.TestCase):
 
         self.assertTrue(piramidy.is_ordered(B))
 
-    def test_size4(self):
+    def test_size4F(self):
         B = Board(4)
         B.nums = [[4, 3, 1, 2], [2, 1, 4, 3], [1, 2, 3, 4],  [3, 4, 2, 1]]
         B.upper = [3, -1, 1, -1]
@@ -184,27 +184,10 @@ class TestIsOrderedBoard(unittest.TestCase):
 
 class TestIsIdentical(unittest.TestCase):
 
-    def test_bothempty(self):
-        self.assertTrue(piramidy.is_identical([], []))
-
-    def test_empty(self):
-
-        self.assertFalse(piramidy.is_identical([], [1]))
-
     def test_tooLong(self):
         list1 = list(nprnd.randint(10, size=(4, 4)))
         list2 = list(nprnd.randint(10, size=(5, 5)))
         self.assertFalse(piramidy.is_identical(list1, list2))
-
-    def test_size2(self):
-        board1 = list(nprnd.randint(2, size=(2, 2)))
-        board2 = list(nprnd.randint(2, size=(2, 2)))
-        result = True
-        for i in range(len(board1)):
-            for j in range(len(board1)):
-                if board1[i][j] == board2[i][j]:
-                    result = False
-        self.assertTrue(piramidy.is_identical(board1, board2) == result)
 
     def test_size5(self):
         board1 = list(nprnd.randint(5, size=(5, 5)))
@@ -216,18 +199,5 @@ class TestIsIdentical(unittest.TestCase):
                     result = False
         self.assertTrue(piramidy.is_identical(board1, board2) == result)
 
-
-suite1 = unittest.TestLoader().loadTestsFromTestCase(Test_check_location_safe)
-suite2 = unittest.TestLoader().loadTestsFromTestCase(TestHowManySeen)
-suite3 = unittest.TestLoader().loadTestsFromTestCase(TestIsOrderedRow)
-suite4 = unittest.TestLoader().loadTestsFromTestCase(TestIsOrderedColumn)
-suite5 = unittest.TestLoader().loadTestsFromTestCase(TestIsOrderedBoard)
-suite6 = unittest.TestLoader().loadTestsFromTestCase(TestIsIdentical)
-
-print(unittest.TextTestRunner(verbosity=3).run(suite1))
-print(unittest.TextTestRunner(verbosity=3).run(suite2))
-print(unittest.TextTestRunner(verbosity=3).run(suite3))
-print(unittest.TextTestRunner(verbosity=3).run(suite4))
-print(unittest.TextTestRunner(verbosity=3).run(suite5))
-print(unittest.TextTestRunner(verbosity=3).run(suite6))
-
+if __name__ == '__main__':
+    unittest.main()
