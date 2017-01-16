@@ -16,8 +16,7 @@ class Board:
         for i in range(self.SIZE):
             print (self.nums[i])
 
-    def read(self):
-        file_name = 'puzzle.txt'
+    def read(self, file_name):
         with open(file_name, 'r') as fh:
             self.SIZE = int(fh.readline())
             self.upper = list(map(int, fh.readline().split()))
@@ -128,10 +127,18 @@ def is_ordered(board):
 
 
 def is_identical(board1, board2):
-    for row in range(len(board1)):
-        for col in range(len(board1)):
-            if board1[row][col] != board2[row][col]:
-                return False
+    if len(board1) != len(board2):
+        return False
+    if len(board1) == 0:
+        if len(board2) == 0:
+            return True
+        if len(board2) > 0:
+            return False
+    else:
+        for row in range(len(board1)):
+            for col in range(len(board1)):
+                if board1[row][col] != board2[row][col]:
+                    return False
     return True
 
 
@@ -175,19 +182,19 @@ if __name__ == '__main__':
     print("solve")
 
     T = Board()
-    T.read()
+    T.read('puzzle.txt')
     solve(T, None)
     T.print_grid()
 
-    print("koniec")
+    print("solved")
     print(is_ordered(T))
-    print('ile?')
+    print('how many solutions?')
 
     C = Board()
-    C.read()
+    C.read('puzzle.txt')
     C.pointer = 0
     if solve(C, T.nums) is False:
-        print("jedna")
+        print("unique")
     else:
-        print("kilka")
+        print("many")
         C.print_grid()
