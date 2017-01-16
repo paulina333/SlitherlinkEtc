@@ -4,34 +4,33 @@ import piramidy
 from piramidy import solve
 
 EMPTY = 0
-SIZE = 5
 
 
 class Board:
 
-    def __init__(self, SIZE, upper, down, left, right):
+    def __init__(self, SIZE):
         self.nums = [[EMPTY] * SIZE for _ in range(SIZE)]
-        self.upper = upper
-        self.down = down
-        self.left = left
-        self.right = right
+        self.upper = []
+        self.down = []
+        self.left = []
+        self.right = []
         self.SIZE = SIZE
         self.pointer = 0
 
     def print_grid(self):
-        for i in range(SIZE):
+        for i in range(self.SIZE):
             print (self.nums[i])
 
     def create_puzzle(self):
-        self.puzzle = [[EMPTY] * (SIZE + 2) for _ in range(SIZE + 2)]
+        self.puzzle = [[EMPTY] * (self.SIZE + 2) for _ in range(self.SIZE + 2)]
         self.puzzle[0] = [EMPTY] + self.upper + [EMPTY]
-        self.puzzle[SIZE + 1] = [EMPTY] + self.down + [EMPTY]
-        for i in range(1, SIZE + 1):
+        self.puzzle[self.SIZE + 1] = [EMPTY] + self.down + [EMPTY]
+        for i in range(1, self.SIZE + 1):
             self.puzzle[i][0] = self.left[i - 1]
-            self.puzzle[i][SIZE + 1] = self.right[i - 1]
+            self.puzzle[i][self.SIZE + 1] = self.right[i - 1]
 
     def print_puzzle(self):
-        for i in range(SIZE + 2):
+        for i in range(self.SIZE + 2):
             print(self.puzzle[i])
 
 
@@ -138,20 +137,12 @@ def deleted_move_txt(upper_s, lower_s, left_s, right_s, count):
         puzzle.write(Left + '\n')
         puzzle.write(Right + '\n')
 
-
-def is_identical(board1, board2):
-    for row in range(len(board1)):
-        for col in range(len(board1)):
-            if board1[row][col] != board2[row][col]:
-                return False
-    return True
-
 if __name__ == '__main__':
 
     print("solve")
 
     SIZE = 5
-    G = Board(SIZE, [], [], [], [])
+    G = Board(SIZE)
     generate(G)
 
     G.print_grid()
@@ -164,7 +155,7 @@ if __name__ == '__main__':
     while SIZE not in G.upper or SIZE - 1 not in G.left:
         # to ensure that it is solvable we need two big numbers
         print("generate again")
-        G = Board(SIZE, [], [], [], [])
+        G = Board(SIZE)
         G.pointer = 0
         generate(G)
 
@@ -199,7 +190,11 @@ if __name__ == '__main__':
         left = list(map(int, fh.readline().split()))
         right = list(map(int, fh.readline().split()))
 
-    B = Board(SIZE, upper, down, left, right)
+    B = Board(SIZE)
+    B.upper = upper
+    B.down = down
+    B.left = left
+    B.right = right
 
     B.create_puzzle()
     B.print_puzzle()
