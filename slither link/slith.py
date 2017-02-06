@@ -131,7 +131,10 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
                 for dots_row in board.dots:
                     print(' '.join(map(str, dots_row)))
                 print()
-        board.dots[i][j] = EMPTY
+        if i ==0 or j == 0 or i == board.dots_height or j == board.dots_width:
+            board.dots[i][j] = OUT_OF_BOARD
+        else:
+            board.dots[i][j] = EMPTY
         edges_taken.remove(last_edge)
         return False
 
@@ -148,7 +151,10 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
                 if backtrack(board, edges_taken,
                              next_i, next_j, begin_i, begin_j, end_if_found):
                     return True
-            board.dots[i][j] = EMPTY
+            if i ==0 or j == 0 or i == board.dots_height or j == board.dots_width:
+                board.dots[i][j] = OUT_OF_BOARD
+            else:
+                board.dots[i][j] = EMPTY
             edges_taken.remove(edge_being_added)
 
     return False
