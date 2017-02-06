@@ -131,7 +131,7 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
                 for dots_row in board.dots:
                     print(' '.join(map(str, dots_row)))
                 print()
-        if i ==0 or j == 0 or i == board.dots_height or j == board.dots_width:
+        if i == 0 or j == 0 or i == board.dots_height or j == board.dots_width:
             board.dots[i][j] = OUT_OF_BOARD
         else:
             board.dots[i][j] = EMPTY
@@ -151,7 +151,8 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
                 if backtrack(board, edges_taken,
                              next_i, next_j, begin_i, begin_j, end_if_found):
                     return True
-            if i ==0 or j == 0 or i == board.dots_height or j == board.dots_width:
+            if i == 0 or j == 0 or i == board.dots_height or \
+            j == board.dots_width:
                 board.dots[i][j] = OUT_OF_BOARD
             else:
                 board.dots[i][j] = EMPTY
@@ -162,7 +163,7 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
 if __name__ == "__main__":
 
     B = Board()
-    B.read('slith2.txt')
+    B.read('slith6_5x5.txt')
     # for debuging purposes
     # for row in B.nums:
     #    print(' '.join(map(str, row)))
@@ -193,7 +194,7 @@ if __name__ == "__main__":
         print("No solution")
 
     C = Board()
-    C.read('slith2.txt')
+    C.read('slith6_5x5.txt')
 
     biggest_tile, biggest_tile_val = find_biggest_tile(C)
 
