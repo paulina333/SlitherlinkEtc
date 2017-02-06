@@ -156,7 +156,7 @@ def backtrack(board, edges_taken=None, i=1, j=1, begin_i=1, begin_j=1,
 if __name__ == "__main__":
 
     B = Board()
-    B.read('no_sol.txt')
+    B.read('slith2.txt')
     # for debuging purposes
     # for row in B.nums:
     #    print(' '.join(map(str, row)))
@@ -187,8 +187,7 @@ if __name__ == "__main__":
         print("No solution")
 
     C = Board()
-    C.read('no_sol.txt')
-    print(C.nums)
+    C.read('slith2.txt')
 
     biggest_tile, biggest_tile_val = find_biggest_tile(C)
 
