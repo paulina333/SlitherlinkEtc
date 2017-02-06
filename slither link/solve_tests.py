@@ -42,7 +42,7 @@ def is_solve_correct(input_file):
 
 if __name__ == '__main__':
 
-    print(is_solve_correct('input_small.txt') is True)
+    print(is_solve_correct('slith3_5x5.txt') is True)
     print(is_solve_correct('testowa4x4.txt') is True)
     print(is_solve_correct('slith2_4x6.txt') is True)
     print(is_solve_correct('nosolution.txt') is False)
